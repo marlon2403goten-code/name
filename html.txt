@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Motorbike | Repuestos Mayorista Villavicencio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;600;800&display=swap');
+
+        :root {
+            --neon-green: #00ff00;
+        }
+
+        body {
+            background-color: #000000;
+            color: #ffffff;
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        .font-brand { font-family: 'Orbitron', sans-serif; }
+
+        .official-logo {
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            user-select: none;
+            filter: drop-shadow(0 0 8px rgba(0, 255, 0, 0.3));
+        }
+
+        .logo-main-row {
+            display: flex;
+            align-items: stretch;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 900;
+            font-size: 1.6rem;
+            letter-spacing: -1px;
+        }
+
+        .box-motor {
+            background-color: #000;
+            color: var(--neon-green);
+            border: 2px solid #ffffff;
+            padding: 4px 12px;
+            display: flex;
+            align-items: center;
+        }
+
+        .box-bike {
+            background-color: var(--neon-green);
+            color: #000;
+            border: 2px solid var(--neon-green);
+            padding: 4px 12px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 0 15px rgba(0, 255, 0, 0.4);
+        }
+
+        .logo-sub-labels {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            padding: 2px 4px 0;
+            font-size: 7px;
+            font-weight: 900;
+            color: #ffffff;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .nav-blur {
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .hero-section {
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.95)), 
+                        url('https://images.unsplash.com/photo-1599819811279-d5ad9cccf838?q=80&w=2070&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .neon-border-hover {
+            transition: all 0.3s ease;
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .neon-border-hover:hover {
+            border-color: var(--neon-green);
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.2);
+            transform: translateY(-5px);
+        }
+
+        .btn-neon-action {
+            background-color: var(--neon-green);
+            color: #000;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .btn-neon-action:hover {
+            background-color: #ffffff;
+            box-shadow: 0 0 20px var(--neon-green);
+            transform: scale(1.05);
+        }
+
+        .text-neon { color: var(--neon-green); }
+        .bg-neon { background-color: var(--neon-green); }
+
+        .filter-pill.active {
+            background-color: var(--neon-green);
+            color: #000;
+            border-color: var(--neon-green);
+        }
+
+        #cart-sidebar, #admin-sidebar {
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: translateX(100%);
+        }
+        
+        #ai-chat-sidebar {
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: translateX(-100%);
+        }
+
+        #cart-sidebar.open, #admin-sidebar.open, #ai-chat-sidebar.open {
+            transform: translateX(0);
+        }
+
+        .animate-pulse-soft { animation: pulse 2s infinite; }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-up { animation: fadeIn 0.8s ease forwards; }
+
+        .drop-zone {
+            border: 2px dashed rgba(0, 255, 0, 0.3);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.02);
+            position: relative;
+            overflow: hidden;
+            min-height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .drop-zone:hover, .drop-zone.dragover {
+            border-color: var(--neon-green);
+            background: rgba(0, 255, 0, 0.05);
+        }
+        #image-preview {
+            max-width: 100%;
+            max-height: 150px;
+            border-radius: 8px;
+            display: none;
+            object-fit: cover;
+        }
+
+        .chat-bubble {
+            position: fixed;
+            bottom: 2rem;
+            left: 2rem;
+            width: 60px;
+            height: 60px;
+            background: var(--neon-green);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: black;
+            font-size: 1.5rem;
+            cursor: pointer;
+            z-index: 100;
+            box-shadow: 0 0 20px var(--neon-green);
+            transition: transform 0.3s;
+        }
+        .chat-bubble:hover { transform: scale(1.1); }
+
+        .message-user { background: #333; align-self: flex-end; }
+        .message-ai { background: var(--neon-green); color: black; align-self: flex-start; }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #000; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--neon-green); }
+
+        .brand-pill.active {
+            background: white;
+            color: black;
+            border-color: white;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="fixed w-full z-50 nav-blur py-3 px-6 md:px-12 flex justify-between items-center">
+        <div class="official-logo scale-75 md:scale-90 origin-left">
+            <div class="logo-main-row"><div class="box-motor">MOTOR</div><div class="box-bike">BIKE</div></div>
+            <div class="logo-sub-labels"><span>REPUESTOS</span><span>MAYORISTA</span></div>
+        </div>
+        <div class="hidden md:flex gap-10 text-[11px] font-black uppercase tracking-[0.3em]">
+            <a href="#inicio" class="hover:text-neon transition">Inicio</a>
+            <a href="#catalogo" class="hover:text-neon transition">Productos</a>
+            <button onclick="openAdmin()" class="text-slate-500 hover:text-white transition font-black">Admin</button>
+        </div>
+        <div class="flex items-center gap-4">
+            <button onclick="toggleCart()" class="relative p-2 text-white hover:text-neon transition">
+                <i class="fas fa-shopping-cart text-xl"></i>
+                <span id="cart-count" class="absolute -top-1 -right-1 bg-neon text-black text-[10px] font-black w-5 h-5 rounded-full flex items-center justify-center">0</span>
+            </button>
+            <a href="https://wa.me/573118799249" target="_blank" class="btn-neon-action px-6 py-2 rounded text-[10px] hidden sm:block">Contacto Directo</a>
+        </div>
+    </nav>
+
+    <!-- BURBUJA CHAT IA -->
+    <div class="chat-bubble" onclick="toggleAIChat()">
+        <i class="fas fa-robot"></i>
+    </div>
+
+    <!-- ASISTENTE IA SIDEBAR -->
+    <div id="ai-chat-sidebar" class="fixed top-0 left-0 h-full w-full md:w-[400px] bg-[#050505] z-[65] border-r border-white/10 flex flex-col shadow-2xl">
+        <div class="p-6 border-b border-white/10 flex justify-between items-center bg-black">
+            <h2 class="font-brand text-xl text-neon uppercase">✨ Asistente IA</h2>
+            <button onclick="toggleAIChat()" class="text-white hover:text-neon text-2xl transition">&times;</button>
+        </div>
+        <div id="ai-messages" class="flex-grow overflow-y-auto p-6 space-y-4 flex flex-col">
+            <div class="message-ai p-3 rounded-2xl text-xs max-w-[85%]">
+                ¡Hola! Soy tu asistente experto de Motorbike. ¿Buscas algún repuesto en especial o tienes dudas técnicas sobre nuestro catálogo?
+            </div>
+        </div>
+        <div class="p-6 border-t border-white/10">
+            <div class="flex gap-2">
+                <input type="text" id="ai-input" placeholder="Pregúntame algo..." class="flex-grow bg-white/5 border border-white/10 rounded-lg p-3 outline-none focus:border-neon text-sm">
+                <button onclick="sendAIMessage()" class="bg-neon text-black px-4 rounded-lg"><i class="fas fa-paper-plane"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- CARRITO SIDEBAR -->
+    <div id="cart-sidebar" class="fixed top-0 right-0 h-full w-full md:w-[400px] bg-black z-[60] border-l border-white/10 flex flex-col shadow-2xl">
+        <div class="p-6 border-b border-white/10 flex justify-between items-center">
+            <h2 class="font-brand text-xl text-neon uppercase">Mi Pedido</h2>
+            <button onclick="toggleCart()" class="text-white hover:text-neon text-2xl transition">&times;</button>
+        </div>
+        <div class="flex-grow overflow-y-auto p-6 flex flex-col">
+            <div id="cart-items" class="space-y-4"></div>
+            <div class="text-center text-slate-500 py-10" id="empty-cart-msg">
+                <i class="fas fa-shopping-basket text-4xl mb-4 opacity-20 text-neon/30"></i>
+                <p class="uppercase text-[10px] font-black tracking-widest">El carrito está vacío</p>
+            </div>
+        </div>
+        <div class="p-6 border-t border-white/10 bg-[#050505]">
+            <div class="flex justify-between items-center mb-6">
+                <span class="text-slate-400 uppercase text-[10px] font-black tracking-[0.2em]">Total Pedido</span>
+                <span id="cart-total" class="text-neon font-brand text-2xl font-black">$0</span>
+            </div>
+            <button onclick="sendWhatsAppOrder()" class="btn-neon-action w-full py-4 rounded-xl flex items-center justify-center gap-3">
+                <i class="fab fa-whatsapp text-lg"></i> Confirmar por WhatsApp
+            </button>
+        </div>
+    </div>
+
+    <!-- ADMIN SIDEBAR -->
+    <div id="admin-sidebar" class="fixed top-0 right-0 h-full w-full md:w-[500px] bg-[#050505] z-[70] border-l border-neon/20 flex flex-col shadow-2xl">
+        <div class="p-6 border-b border-white/10 flex justify-between items-center bg-black">
+            <h2 class="font-brand text-xl text-neon">Panel Admin</h2>
+            <button onclick="closeAdmin()" class="text-white hover:text-neon text-2xl">&times;</button>
+        </div>
+        <div id="admin-login-ui" class="p-8 flex-grow flex flex-col justify-center items-center text-center">
+            <i class="fas fa-lock text-4xl text-neon mb-6"></i>
+            <h3 class="font-brand mb-8 uppercase tracking-widest text-xs">Acceso Restringido</h3>
+            <input type="password" id="admin-pass" placeholder="Contraseña de Administrador" class="w-full bg-black border border-white/10 rounded-xl p-4 mb-4 outline-none focus:border-neon text-white text-center">
+            <button onclick="checkAdminAuth()" class="btn-neon-action w-full py-4 rounded-xl font-black">Entrar</button>
+            <p id="admin-error" class="text-red-500 text-[10px] mt-4 uppercase hidden">Contraseña incorrecta</p>
+        </div>
+        <div id="admin-controls-ui" class="hidden flex-grow overflow-y-auto p-6 space-y-8">
+            <div class="bg-black p-6 rounded-2xl border border-white/5">
+                <h4 class="text-neon font-brand text-sm mb-6 uppercase tracking-widest">Inventario Pro</h4>
+                <input type="hidden" id="edit-id">
+                <div class="space-y-4">
+                    <input type="text" id="form-name" placeholder="Nombre del Producto" class="w-full bg-white/5 border border-white/10 rounded-lg p-3 outline-none focus:border-neon text-sm">
+                    <div class="flex gap-2">
+                        <input type="text" id="form-ref" placeholder="Referencia" class="flex-grow bg-white/5 border border-white/10 rounded-lg p-3 outline-none focus:border-neon text-sm">
+                        <button onclick="generateAIDescription()" class="bg-white/10 hover:bg-white/20 text-xs px-3 rounded-lg text-neon border border-neon/30 transition">
+                            ✨ Generar IA
+                        </button>
+                    </div>
+                    <textarea id="form-desc" placeholder="Descripción del producto (Opcional)..." class="w-full bg-white/5 border border-white/10 rounded-lg p-3 outline-none focus:border-neon text-sm h-20 resize-none"></textarea>
+                    
+                    <div class="grid grid-cols-2 gap-4">
+                        <input type="number" id="form-detal" placeholder="P. Detal" class="bg-white/5 border border-white/10 rounded-lg p-3 outline-none focus:border-neon text-sm">
+                        <input type="number" id="form-mayor" placeholder="P. Mayor" class="bg-white/5 border border-white/10 rounded-lg p-3 outline-none focus:border-neon text-sm">
+                    </div>
+                    
+                    <select id="form-cat" onchange="toggleAdminBrandSelect()" class="w-full bg-white/5 border border-white/10 rounded-lg p-3 outline-none focus:border-neon text-sm">
+                        <option value="accesorios">Accesorios</option>
+                        <option value="iluminacion">Iluminación</option>
+                        <option value="repuestos">Repuestos</option>
+                        <option value="llantas">Llantas</option>
+                        <option value="lubricantes">Lubricantes</option>
+                        <option value="frenos">Frenos</option>
+                    </select>
+
+                    <div id="admin-brand-select-container" class="hidden animate-up">
+                        <label class="text-[10px] text-slate-500 uppercase font-black mb-2 block">Seleccionar Marca de Repuesto</label>
+                        <select id="form-brand" class="w-full bg-white/5 border border-white/10 rounded-lg p-3 outline-none focus:border-neon text-sm">
+                            <option value="GENERICO">GENÉRICO / OTROS</option>
+                            <option value="AKT">AKT</option>
+                            <option value="HERO">HERO</option>
+                            <option value="BAJAJ">BAJAJ</option>
+                            <option value="YAMAHA">YAMAHA</option>
+                            <option value="AUTECO">AUTECO</option>
+                            <option value="SUZUKI">SUZUKI</option>
+                            <option value="HONDA">HONDA</option>
+                        </select>
+                    </div>
+
+                    <div id="drop-zone" class="drop-zone" onclick="document.getElementById('file-input').click()">
+                        <div id="drop-text" class="text-slate-400 text-[11px]">Arrastra imagen aquí o <span class="text-neon">haz clic</span></div>
+                        <img id="image-preview" src="#" alt="Vista previa">
+                    </div>
+                    <input type="file" id="file-input" class="hidden" accept="image/*" onchange="handleFileSelect(event)">
+                    <div class="flex gap-3 pt-4">
+                        <button id="btn-save" onclick="saveProduct()" class="btn-neon-action flex-grow py-4 rounded-lg text-xs font-black uppercase">Guardar Producto</button>
+                        <button onclick="resetForm()" class="bg-white/5 text-white px-4 rounded-lg text-xs hover:bg-white/10 transition">Limpiar</button>
+                    </div>
+                    <div id="admin-msg" class="text-[10px] uppercase text-center font-bold tracking-widest mt-2"></div>
+                </div>
+            </div>
+
+            <div class="bg-black p-6 rounded-2xl border border-white/5">
+                <h4 class="text-neon font-brand text-sm mb-6 uppercase tracking-widest">Seguridad Avanzada</h4>
+                <div id="pass-request-step">
+                    <p class="text-[10px] text-slate-400 mb-4 uppercase leading-relaxed text-center">
+                        Ingresa tu **Clave Maestra Personal** para recibir el código de verificación por WhatsApp (3117718703):
+                    </p>
+                    <input type="password" id="master-key-input" placeholder="Clave Maestra" class="w-full bg-black border border-white/10 rounded-xl p-3 mb-4 outline-none focus:border-neon text-white text-center text-sm">
+                    <button id="btn-request-code" onclick="requestPassCode()" class="w-full border border-neon/30 hover:bg-neon/10 text-neon text-[10px] font-black py-3 rounded-lg uppercase tracking-widest transition">Validar y Recibir Código</button>
+                </div>
+                <div id="pass-verify-step" class="hidden space-y-4">
+                    <p class="text-[9px] text-center text-neon uppercase italic font-bold">Identidad confirmada. Ingresa el código recibido en tu WhatsApp:</p>
+                    <input type="text" id="verify-code-input" placeholder="Código de 6 dígitos" class="w-full bg-white/5 border border-white/10 rounded-lg p-3 outline-none focus:border-neon text-center text-sm tracking-[0.5em]">
+                    <input type="password" id="new-pass-input" placeholder="Nueva Contraseña Administrativa" class="w-full bg-white/5 border border-white/10 rounded-lg p-3 outline-none focus:border-neon text-sm">
+                    <button onclick="verifyAndChangePass()" class="btn-neon-action w-full py-4 rounded-lg text-[10px] font-black uppercase">Actualizar Seguridad</button>
+                    <button onclick="resetPassFlow()" class="w-full text-slate-500 text-[8px] uppercase font-black hover:text-white transition mt-2">Cancelar Operación</button>
+                </div>
+            </div>
+
+            <div class="bg-black p-6 rounded-2xl border border-white/5 text-center">
+                <button onclick="logoutAdmin()" class="text-red-500 text-[10px] uppercase font-bold hover:underline">Cerrar Sesión Admin</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- HERO -->
+    <section id="inicio" class="hero-section h-screen flex items-center justify-center text-center px-6">
+        <div class="max-w-4xl animate-up">
+            <div class="official-logo scale-[1.8] md:scale-[2.5] mb-16">
+                <div class="logo-main-row"><div class="box-motor">MOTOR</div><div class="box-bike">BIKE</div></div>
+                <div class="logo-sub-labels"><span>REPUESTOS</span><span>MAYORISTA</span></div>
+            </div>
+            <h1 class="text-4xl md:text-7xl font-black mb-8 leading-none tracking-tighter uppercase">Dominio <span class="text-neon">Total</span> <br>en Repuestos</h1>
+            <p class="text-slate-300 text-lg md:text-xl mb-12 max-w-2xl mx-auto font-light leading-relaxed">Repuestos premium y accesorios de última generación. Sede física en <span class="text-white font-bold">Villavicencio</span>.</p>
+            <div class="flex flex-col md:flex-row gap-5 justify-center"><a href="#catalogo" class="btn-neon-action px-12 py-5 rounded-lg text-sm flex items-center justify-center gap-3"><i class="fas fa-motorcycle"></i> Catálogo Mayorista</a></div>
+        </div>
+    </section>
+
+    <!-- CATALOGO -->
+    <section id="catalogo" class="py-28 container mx-auto px-6">
+        <div class="flex flex-col md:flex-row justify-between items-end mb-12 gap-8">
+            <div class="animate-up"><h2 class="font-brand text-5xl font-black italic uppercase text-neon tracking-tighter">Inventario</h2></div>
+            <div class="flex gap-3 flex-wrap">
+                <button onclick="filter('all')" class="filter-pill active border border-white/10 px-6 py-2 rounded-full text-[10px] font-black uppercase tracking-widest transition">Todos</button>
+                <button onclick="filter('iluminacion')" class="filter-pill border border-white/10 px-6 py-2 rounded-full text-[10px] font-black uppercase tracking-widest transition">Iluminación</button>
+                <button onclick="filter('accesorios')" class="filter-pill border border-white/10 px-6 py-2 rounded-full text-[10px] font-black uppercase tracking-widest transition">Accesorios</button>
+                <button onclick="filter('repuestos')" class="filter-pill border border-white/10 px-6 py-2 rounded-full text-[10px] font-black uppercase tracking-widest transition">Repuestos</button>
+                <button onclick="filter('llantas')" class="filter-pill border border-white/10 px-6 py-2 rounded-full text-[10px] font-black uppercase tracking-widest transition">Llantas</button>
+                <button onclick="filter('lubricantes')" class="filter-pill border border-white/10 px-6 py-2 rounded-full text-[10px] font-black uppercase tracking-widest transition">Lubricantes</button>
+                <button onclick="filter('frenos')" class="filter-pill border border-white/10 px-6 py-2 rounded-full text-[10px] font-black uppercase tracking-widest transition">Frenos</button>
+            </div>
+        </div>
+
+        <!-- MENU DE MARCAS (SOLO VISIBLE CUANDO REPUESTOS ESTÁ ACTIVO) -->
+        <div id="brands-filter-bar" class="hidden mb-12 animate-up border-b border-white/5 pb-8">
+            <p class="text-[10px] text-slate-500 uppercase font-black mb-4 tracking-widest">Filtrar por Marca:</p>
+            <div class="flex gap-2 flex-wrap">
+                <button onclick="filterBrand('all')" class="brand-pill active border border-white/10 px-4 py-1.5 rounded-lg text-[9px] font-bold uppercase transition">Todas</button>
+                <button onclick="filterBrand('AKT')" class="brand-pill border border-white/10 px-4 py-1.5 rounded-lg text-[9px] font-bold uppercase transition">AKT</button>
+                <button onclick="filterBrand('HERO')" class="brand-pill border border-white/10 px-4 py-1.5 rounded-lg text-[9px] font-bold uppercase transition">HERO</button>
+                <button onclick="filterBrand('BAJAJ')" class="brand-pill border border-white/10 px-4 py-1.5 rounded-lg text-[9px] font-bold uppercase transition">BAJAJ</button>
+                <button onclick="filterBrand('YAMAHA')" class="brand-pill border border-white/10 px-4 py-1.5 rounded-lg text-[9px] font-bold uppercase transition">YAMAHA</button>
+                <button onclick="filterBrand('AUTECO')" class="brand-pill border border-white/10 px-4 py-1.5 rounded-lg text-[9px] font-bold uppercase transition">AUTECO</button>
+                <button onclick="filterBrand('SUZUKI')" class="brand-pill border border-white/10 px-4 py-1.5 rounded-lg text-[9px] font-bold uppercase transition">SUZUKI</button>
+                <button onclick="filterBrand('HONDA')" class="brand-pill border border-white/10 px-4 py-1.5 rounded-lg text-[9px] font-bold uppercase transition">HONDA</button>
+            </div>
+        </div>
+
+        <div class="w-full max-w-2xl mx-auto mb-16 relative">
+            <input type="text" id="searchInput" placeholder="Buscar por nombre o referencia..." class="w-full bg-white/5 border border-white/10 rounded-full p-5 pl-14 text-white text-sm outline-none transition focus:border-neon focus:ring-1 focus:ring-neon/30">
+            <i class="fas fa-search absolute left-6 top-1/2 -translate-y-1/2 text-slate-600"></i>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10" id="product-grid"></div>
+        <div class="text-center py-20 text-slate-600 hidden" id="no-results-message"><i class="fas fa-box-open text-6xl mb-4 opacity-20"></i><p class="text-xl uppercase font-black text-xs tracking-widest">Sin resultados</p></div>
+    </section>
+
+    <footer class="py-20 bg-black border-t border-white/5 text-center px-6">
+        <div class="official-logo mb-12">
+            <div class="logo-main-row"><div class="box-motor">MOTOR</div><div class="box-bike">BIKE</div></div>
+            <div class="logo-sub-labels"><span>REPUESTOS</span><span>MAYORISTA</span></div>
+        </div>
+
+        <div class="flex justify-center gap-10 mb-12">
+            <a href="https://www.instagram.com/motorbike.repuestos" target="_blank" class="text-slate-500 hover:text-neon transition text-3xl"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.facebook.com/share/1B4KVZv6yp/" target="_blank" class="text-slate-500 hover:text-neon transition text-3xl"><i class="fab fa-facebook"></i></a>
+            <a href="https://www.tiktok.com/@motorbike_06" target="_blank" class="text-slate-500 hover:text-neon transition text-3xl"><i class="fab fa-tiktok"></i></a>
+        </div>
+        
+        <p class="text-[10px] text-slate-700 font-black uppercase tracking-[0.5em]">&copy; 2024 MOTORBIKE MAYORISTA • VILLAVICENCIO</p>
+    </footer>
+
+    <!-- Firebase y Gemini SDKs -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, doc, setDoc, addDoc, getDoc, onSnapshot, deleteDoc, query } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        const firebaseConfig = JSON.parse(__firebase_config);
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'motorbike-repuestos-v1';
+        const apiKey = ""; 
+
+        let productos = [];
+        let cart = [];
+        let currentCategory = 'all';
+        let currentBrand = 'all';
+        let isAdmin = false;
+        let user = null;
+        let currentImageBase64 = "";
+        
+        const _idp = atob("TWFybG9uMjQwMw=="); // Marlon2403 oculto
+        const _dest = "3117718703";
+
+        let currentAdminPass = "admin123"; 
+        let activeVerificationCode = null;
+
+        // --- LÓGICA GEMINI API ---
+        async function askGemini(prompt, systemInstruction = "") {
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+            const payload = {
+                contents: [{ parts: [{ text: prompt }] }],
+                systemInstruction: { parts: [{ text: systemInstruction }] }
+            };
+
+            for (let i = 0; i < 5; i++) {
+                try {
+                    const response = await fetch(url, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    if (!response.ok) throw new Error('API Error');
+                    const result = await response.json();
+                    return result.candidates?.[0]?.content?.parts?.[0]?.text;
+                } catch (err) {
+                    await new Promise(r => setTimeout(r, Math.pow(2, i) * 1000));
+                }
+            }
+            return "Lo siento, tuve un problema al conectarme con mi cerebro de IA. Intenta de nuevo.";
+        }
+
+        window.generateAIDescription = async () => {
+            const name = document.getElementById('form-name').value;
+            const ref = document.getElementById('form-ref').value;
+            if(!name) return alert("Ingresa al menos el nombre del producto.");
+
+            const btn = event.currentTarget;
+            btn.innerText = "✨ Generando...";
+            btn.disabled = true;
+
+            const prompt = `Genera una descripción comercial y técnica breve (máximo 150 caracteres) para un repuesto de moto llamado "${name}" con referencia "${ref}". Sé profesional y persuasivo.`;
+            const result = await askGemini(prompt, "Eres un experto en ventas de repuestos de motos para Motorbike Mayorista.");
+            
+            document.getElementById('form-desc').value = result;
+            btn.innerText = "✨ Generar IA";
+            btn.disabled = false;
+        };
+
+        window.sendAIMessage = async () => {
+            const input = document.getElementById('ai-input');
+            const container = document.getElementById('ai-messages');
+            const msg = input.value.trim();
+            if(!msg) return;
+
+            input.value = "";
+            container.innerHTML += `<div class="message-user p-3 rounded-2xl text-xs max-w-[85%]">${msg}</div>`;
+            container.scrollTop = container.scrollHeight;
+
+            const inventoryContext = productos.map(p => `- ${p.nombre} (Ref: ${p.referencia}, Precio: ${formatCOP(p.precioMayorista)})`).join("\n");
+            const systemPrompt = `Eres el asistente inteligente de "Motorbike Mayorista" en Villavicencio. 
+            Ayuda a los clientes a encontrar repuestos. No inventes productos. 
+            Este es nuestro catálogo actual:\n${inventoryContext}\n
+            Responde de forma amable, motera y técnica. Si no tenemos algo, sugiere lo más parecido o invita a contactar a Marlon vía WhatsApp.`;
+
+            const aiResponse = await askGemini(msg, systemPrompt);
+            container.innerHTML += `<div class="message-ai p-3 rounded-2xl text-xs max-w-[85%]">${aiResponse}</div>`;
+            container.scrollTop = container.scrollHeight;
+        };
+
+        // --- FIREBASE INIT ---
+        const initAuth = async () => {
+            try {
+                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) await signInWithCustomToken(auth, __initial_auth_token);
+                else await signInAnonymously(auth);
+            } catch (e) { console.error("Auth Error:", e); }
+        };
+        initAuth();
+
+        onAuthStateChanged(auth, async (u) => {
+            user = u;
+            if (user) {
+                const q = collection(db, 'artifacts', appId, 'public', 'data', 'productos');
+                onSnapshot(q, (snapshot) => { 
+                    productos = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })); 
+                    render(); 
+                }, (err) => console.error("Firestore Error:", err));
+
+                try {
+                    const configDoc = await getDoc(doc(db, 'artifacts', appId, 'public', 'data', 'config', 'security'));
+                    if (configDoc.exists()) currentAdminPass = configDoc.data().adminPass;
+                } catch (e) {}
+            }
+        });
+
+        // --- UI HELPERS ---
+        window.formatCOP = (price) => '$' + Number(price).toLocaleString('es-CO');
+        window.toggleCart = () => document.getElementById('cart-sidebar').classList.toggle('open');
+        window.openAdmin = () => document.getElementById('admin-sidebar').classList.add('open');
+        window.closeAdmin = () => { document.getElementById('admin-sidebar').classList.remove('open'); resetPassFlow(); };
+        window.toggleAIChat = () => document.getElementById('ai-chat-sidebar').classList.toggle('open');
+
+        window.toggleAdminBrandSelect = () => {
+            const cat = document.getElementById('form-cat').value;
+            const container = document.getElementById('admin-brand-select-container');
+            if (cat === 'repuestos') container.classList.remove('hidden');
+            else container.classList.add('hidden');
+        };
+
+        window.checkAdminAuth = () => {
+            const passInput = document.getElementById('admin-pass').value;
+            if (passInput === currentAdminPass) { 
+                isAdmin = true; 
+                document.getElementById('admin-login-ui').classList.add('hidden'); 
+                document.getElementById('admin-controls-ui').classList.remove('hidden'); 
+                render(); 
+            }
+            else document.getElementById('admin-error').classList.remove('hidden');
+        };
+
+        window.logoutAdmin = () => { 
+            isAdmin = false; 
+            document.getElementById('admin-login-ui').classList.remove('hidden'); 
+            document.getElementById('admin-controls-ui').classList.add('hidden'); 
+            document.getElementById('admin-pass').value = ''; 
+            render(); 
+        };
+
+        window.requestPassCode = async () => {
+            const masterInput = document.getElementById('master-key-input');
+            const btn = document.getElementById('btn-request-code');
+
+            if (!masterInput || masterInput.value.trim() !== _idp) {
+                alert("Acceso Denegado");
+                return;
+            }
+
+            try {
+                btn.disabled = true;
+                btn.innerText = "Validando...";
+                activeVerificationCode = Math.floor(100000 + Math.random() * 900000).toString();
+                const msg = `🛡️ SEGURIDAD MOTORBIKE 🛡️\n\nIdentidad validada.\n\nTu código privado de recuperación es: ${activeVerificationCode}\n\nIngresa este código en el panel para cambiar tu contraseña.`;
+                const waUrl = `https://wa.me/57${_dest}?text=${encodeURIComponent(msg)}`;
+                const win = window.open(waUrl, '_blank');
+                if (!win || win.closed || typeof win.closed === 'undefined') window.location.assign(waUrl);
+                document.getElementById('pass-request-step').classList.add('hidden');
+                document.getElementById('pass-verify-step').classList.remove('hidden');
+            } catch (e) {
+                btn.disabled = false;
+                btn.innerText = "Validar y Recibir Código";
+            }
+        };
+
+        window.verifyAndChangePass = async () => {
+            const codeInput = document.getElementById('verify-code-input').value.trim();
+            const newPass = document.getElementById('new-pass-input').value.trim();
+            if (!activeVerificationCode || codeInput !== activeVerificationCode) return alert("Código incorrecto.");
+            if (newPass.length < 4) return alert("Contraseña muy corta.");
+            try {
+                await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'config', 'security'), { adminPass: newPass });
+                currentAdminPass = newPass;
+                alert("¡CONTRASEÑA ACTUALIZADA!");
+                resetPassFlow();
+            } catch (e) { alert("Error al guardar."); }
+        };
+
+        const resetPassFlow = () => {
+            const r = document.getElementById('pass-request-step');
+            const v = document.getElementById('pass-verify-step');
+            if (r) r.classList.remove('hidden');
+            if (v) v.classList.add('hidden');
+            activeVerificationCode = null;
+            const btn = document.getElementById('btn-request-code');
+            if (btn) { btn.disabled = false; btn.innerText = "Validar y Recibir Código"; }
+        };
+
+        window.handleFileSelect = (event) => {
+            const file = event.target.files[0];
+            if (file && file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    currentImageBase64 = e.target.result;
+                    const preview = document.getElementById('image-preview');
+                    preview.src = currentImageBase64;
+                    preview.style.display = 'block';
+                    document.getElementById('drop-text').style.display = 'none';
+                };
+                reader.readAsDataURL(file);
+            }
+        };
+
+        window.saveProduct = async () => {
+            if (!user) return;
+            const pId = document.getElementById('edit-id').value;
+            const cat = document.getElementById('form-cat').value;
+            const data = {
+                nombre: document.getElementById('form-name').value.trim(),
+                referencia: document.getElementById('form-ref').value.trim(),
+                descripcion: document.getElementById('form-desc').value.trim(),
+                precioDetal: Number(document.getElementById('form-detal').value),
+                precioMayorista: Number(document.getElementById('form-mayor').value),
+                categoria: cat,
+                marca: cat === 'repuestos' ? document.getElementById('form-brand').value : 'GENERICO',
+                imagen: currentImageBase64 || "https://images.unsplash.com/photo-1558981403-c5f9899a28bc?q=80&w=400"
+            };
+            if (!data.nombre || !data.referencia) return;
+            try {
+                const docRef = pId ? doc(db, 'artifacts', appId, 'public', 'data', 'productos', pId) : doc(collection(db, 'artifacts', appId, 'public', 'data', 'productos'));
+                await setDoc(docRef, data);
+                resetForm();
+                const msgArea = document.getElementById('admin-msg');
+                msgArea.innerText = "¡Guardado!";
+                setTimeout(() => msgArea.innerText = "", 2000);
+            } catch (e) { console.error(e); }
+        };
+
+        window.editProduct = (id) => {
+            const p = productos.find(x => x.id === id);
+            if (p) {
+                document.getElementById('edit-id').value = p.id;
+                document.getElementById('form-name').value = p.nombre;
+                document.getElementById('form-ref').value = p.referencia;
+                document.getElementById('form-desc').value = p.descripcion || "";
+                document.getElementById('form-detal').value = p.precioDetal;
+                document.getElementById('form-mayor').value = p.precioMayorista;
+                document.getElementById('form-cat').value = p.categoria;
+                
+                if (p.categoria === 'repuestos') {
+                    document.getElementById('admin-brand-select-container').classList.remove('hidden');
+                    document.getElementById('form-brand').value = p.marca || 'GENERICO';
+                } else {
+                    document.getElementById('admin-brand-select-container').classList.add('hidden');
+                }
+
+                currentImageBase64 = p.imagen;
+                const preview = document.getElementById('image-preview');
+                preview.src = p.imagen;
+                preview.style.display = 'block';
+                document.getElementById('drop-text').style.display = 'none';
+                openAdmin();
+            }
+        };
+
+        window.deleteProduct = async (id) => { 
+            if (confirm("¿Eliminar permanentemente?")) await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'productos', id)); 
+        };
+
+        window.resetForm = () => {
+            document.getElementById('edit-id').value = '';
+            document.getElementById('form-name').value = '';
+            document.getElementById('form-ref').value = '';
+            document.getElementById('form-desc').value = '';
+            document.getElementById('form-detal').value = '';
+            document.getElementById('form-mayor').value = '';
+            document.getElementById('admin-brand-select-container').classList.add('hidden');
+            currentImageBase64 = "";
+            document.getElementById('image-preview').style.display = 'none';
+            document.getElementById('drop-text').style.display = 'block';
+        };
+
+        window.addToCart = (id) => {
+            const p = productos.find(x => x.id === id); if (!p) return;
+            const inCart = cart.find(item => item.id === id);
+            if (inCart) inCart.qty++; else cart.push({ ...p, qty: 1 });
+            updateCartUI(); toggleCart();
+        };
+
+        window.updateCartQty = (id, delta) => {
+            const i = cart.find(x => x.id === id);
+            if (i) { i.qty += delta; if (i.qty <= 0) cart = cart.filter(x => x.id !== id); updateCartUI(); }
+        };
+
+        const updateCartUI = () => {
+            const c = document.getElementById('cart-items');
+            const empty = document.getElementById('empty-cart-msg');
+            if (!c) return; c.innerHTML = ''; let tg = 0, ti = 0;
+            if (cart.length === 0) { if (empty) empty.classList.remove('hidden'); } else {
+                if (empty) empty.classList.add('hidden');
+                cart.forEach(item => {
+                    const st = item.precioMayorista * item.qty; tg += st; ti += item.qty;
+                    c.innerHTML += `
+                        <div class="flex items-center gap-4 bg-white/5 p-4 rounded-xl border border-white/5">
+                            <img src="${item.imagen}" class="w-14 h-14 rounded-lg object-cover">
+                            <div class="flex-grow">
+                                <h4 class="text-[10px] font-black text-white uppercase line-clamp-1">${item.nombre}</h4>
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center gap-3">
+                                        <button onclick="updateCartQty('${item.id}', -1)" class="w-6 h-6 rounded bg-white/10 hover:bg-neon hover:text-black">-</button>
+                                        <span class="text-xs font-bold text-white">${item.qty}</span>
+                                        <button onclick="updateCartQty('${item.id}', 1)" class="w-6 h-6 rounded bg-white/10 hover:bg-neon hover:text-black">+</button>
+                                    </div>
+                                    <p class="text-xs font-black text-neon">${formatCOP(st)}</p>
+                                </div>
+                            </div>
+                        </div>`;
+                });
+            }
+            document.getElementById('cart-count').innerText = ti;
+            document.getElementById('cart-total').innerText = formatCOP(tg);
+        };
+
+        window.sendWhatsAppOrder = () => {
+            if (cart.length === 0) return;
+            let msg = "🏍️ *PEDIDO MOTORBIKE*\n\nHola, solicito los siguientes productos:\n\n";
+            cart.forEach(i => msg += `• ${i.nombre}\n  REF: ${i.referencia}\n  Cant: ${i.qty} x ${formatCOP(i.precioMayorista)}\n\n`);
+            msg += `💰 *TOTAL: ${formatCOP(cart.reduce((a, b) => a + (b.precioMayorista * b.qty), 0))}*`;
+            window.open(`https://wa.me/573118799249?text=${encodeURIComponent(msg)}`, '_blank');
+        };
+
+        const render = () => {
+            const grid = document.getElementById('product-grid');
+            const no = document.getElementById('no-results-message');
+            const term = document.getElementById('searchInput') ? document.getElementById('searchInput').value.toLowerCase() : '';
+            if (!grid) return; grid.innerHTML = '';
+            
+            const filtered = productos.filter(p => {
+                const matchCat = (currentCategory === 'all' || p.categoria === currentCategory);
+                const matchBrand = (currentCategory !== 'repuestos' || currentBrand === 'all' || p.marca === currentBrand);
+                const matchSearch = (p.nombre.toLowerCase().includes(term) || p.referencia.toLowerCase().includes(term));
+                return matchCat && matchBrand && matchSearch;
+            });
+
+            if (filtered.length === 0) { if (no) no.classList.remove('hidden'); return; }
+            if (no) no.classList.add('hidden');
+            
+            filtered.forEach(p => {
+                grid.innerHTML += `
+                    <div class="neon-border-hover bg-white/5 border border-white/10 rounded-2xl overflow-hidden group relative">
+                        ${isAdmin ? `<div class="absolute top-2 right-2 z-20 flex gap-1"><button onclick="editProduct('${p.id}')" class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-[10px] shadow-lg"><i class="fas fa-edit"></i></button><button onclick="deleteProduct('${p.id}')" class="w-8 h-8 bg-red-600 rounded-lg flex items-center justify-center text-[10px] shadow-lg"><i class="fas fa-trash"></i></button></div>` : ''}
+                        <div class="h-48 overflow-hidden relative">
+                            <div class="absolute top-4 left-4 z-10 bg-black/80 px-2 py-0.5 rounded text-[7px] font-black uppercase text-neon border border-neon/20">${p.categoria} ${p.marca && p.marca !== 'GENERICO' ? '• ' + p.marca : ''}</div>
+                            <img src="${p.imagen}" class="w-full h-full object-cover grayscale-[30%] group-hover:grayscale-0 transition duration-500">
+                        </div>
+                        <div class="p-6">
+                            <h3 class="font-bold text-xs mb-1 line-clamp-2 min-h-[32px] text-white uppercase">${p.nombre}</h3>
+                            <p class="text-[9px] text-slate-500 mb-2">REF: ${p.referencia}</p>
+                            <p class="text-[8px] text-slate-400 mb-4 line-clamp-2 italic">${p.descripcion || ''}</p>
+                            <div class="bg-black/40 p-3 rounded-xl mb-4 border-l-2 border-neon">
+                                <div class="flex justify-between items-center text-[9px] text-slate-500 mb-1"><span>P. Sugerido:</span><span class="line-through">${formatCOP(p.precioDetal)}</span></div>
+                                <div class="flex justify-between items-center text-white"><span class="text-lg font-brand text-neon">${formatCOP(p.precioMayorista)}</span></div>
+                            </div>
+                            <button onclick="addToCart('${p.id}')" class="w-full bg-white/5 hover:bg-neon hover:text-black text-[10px] font-black py-3 rounded-lg transition-all border border-white/10 uppercase">Agregar al Pedido</button>
+                        </div>
+                    </div>`;
+            });
+        };
+
+        window.filter = (c) => { 
+            currentCategory = c; 
+            currentBrand = 'all'; // Reset brand on category change
+            
+            const brandBar = document.getElementById('brands-filter-bar');
+            if (c === 'repuestos') brandBar.classList.remove('hidden');
+            else brandBar.classList.add('hidden');
+
+            document.querySelectorAll('.filter-pill').forEach(b => b.classList.remove('active')); 
+            if (event && event.target) event.target.classList.add('active'); 
+            
+            // Reset active brand pill
+            document.querySelectorAll('.brand-pill').forEach(b => b.classList.remove('active'));
+            document.querySelector('.brand-pill[onclick*="all"]').classList.add('active');
+
+            render(); 
+        };
+
+        window.filterBrand = (brand) => {
+            currentBrand = brand;
+            document.querySelectorAll('.brand-pill').forEach(b => b.classList.remove('active'));
+            if (event && event.target) event.target.classList.add('active');
+            render();
+        };
+
+        const sInput = document.getElementById('searchInput');
+        if (sInput) sInput.addEventListener('input', render);
+    </script>
+</body>
+</html>
